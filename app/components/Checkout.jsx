@@ -6,7 +6,7 @@ const Checkout = () => {
   const [snapLoaded, setSnapLoaded] = useState(false);
   const [snapToken, setSnapToken] = useState(null);
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk2NzEwZDgzLWU1OTQtNDVjYy05NWY0LWRhYTdhNWMyMDIxZSIsImlhdCI6MTcyODAxOTI4NiwiZXhwIjoxNzU5NTU1Mjg2fQ.TQimDMYH-h3ZhQ3lpJh0UT89RgmslRO6kytHrXcIreU"; // Use environment variable for security
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk2NzEwZDgzLWU1OTQtNDVjYy05NWY0LWRhYTdhNWMyMDIxZSIsImlhdCI6MTcyODIyOTE4NCwiZXhwIjoxNzU5NzY1MTg0fQ.6zr_MSJmy0IVUVoUZxtuCVHDOArNmLEyuh8TvWbdrD4"; // Use environment variable for security
 
   useEffect(() => {
     const snapScript = document.createElement("script");
@@ -51,7 +51,7 @@ const Checkout = () => {
     };
 
     try {
-      const response = await fetch("https://5a6b-103-228-242-209.ngrok-free.app/create-payment", {
+      const response = await fetch("https://d5bd-160-19-226-254.ngrok-free.app/create-payment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,32 +75,34 @@ const Checkout = () => {
       console.log("Snap Token:", snapToken);
       setSnapToken(snapToken); // Store token received from the response
 
-      if (snapLoaded && window.snap && snapToken) {
-        window.snap.pay(snapToken, {
-          onSuccess: function (result) {
-            console.log("Payment success:", result);
-            alert("Payment successful!");
-          },
-          onPending: function (result) {
-            console.log("Payment pending:", result);
-            alert("Waiting for payment...");
-          },
-          onError: function (result) {
-            console.error("Payment failed:", result);
-            alert("Payment failed!");
-          },
-          onClose: function () {
-            alert("Payment popup closed without finishing the transaction.");
-          },
-        });
-      } else {
-        console.error("Midtrans Snap is not loaded or token is missing");
-      }
     } catch (error) {
       console.error("Error during checkout:", error);
       alert("An error occurred during checkout. Please try again.");
     }
-  };    
+  };
+
+  // New effect to handle snap payment only when both snapToken and snapLoaded are ready
+  useEffect(() => {
+    if (snapLoaded && snapToken) {
+      window.snap.pay(snapToken, {
+        onSuccess: function (result) {
+          console.log("Payment success:", result);
+          alert("Payment successful!");
+        },
+        onPending: function (result) {
+          console.log("Payment pending:", result);
+          alert("Waiting for payment...");
+        },
+        onError: function (result) {
+          console.error("Payment failed:", result);
+          alert("Payment failed!");
+        },
+        onClose: function () {
+          alert("Payment popup closed without finishing the transaction.");
+        },
+      });
+    }
+  }, [snapLoaded, snapToken]);
 
   return (
     <div className="flex flex-col items-center justify-between">
