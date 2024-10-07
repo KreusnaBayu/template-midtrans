@@ -6,7 +6,7 @@ const Checkout = () => {
   const [snapLoaded, setSnapLoaded] = useState(false);
   const [snapToken, setSnapToken] = useState(null);
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk2NzEwZDgzLWU1OTQtNDVjYy05NWY0LWRhYTdhNWMyMDIxZSIsImlhdCI6MTcyODIyOTE4NCwiZXhwIjoxNzU5NzY1MTg0fQ.6zr_MSJmy0IVUVoUZxtuCVHDOArNmLEyuh8TvWbdrD4"; // Use environment variable for security
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk2NzEwZDgzLWU1OTQtNDVjYy05NWY0LWRhYTdhNWMyMDIxZSIsImlhdCI6MTcyODI3OTM5OSwiZXhwIjoxNzU5ODE1Mzk5fQ.WVea_kAledjpoGXrar3aCNmc-JsrdZBQuwS7HLGIzQM"; // Use environment variable for security
 
   useEffect(() => {
     const snapScript = document.createElement("script");
@@ -37,8 +37,8 @@ const Checkout = () => {
     const data = {
       gross_amount: product.price * quantity,
       email: "customer@example.com",
-      firstName: "John",
-      lastName: "Doe",
+      firstName: "",
+      lastName: "",
       phone: "1234567890",
       items: [
         {
@@ -51,7 +51,7 @@ const Checkout = () => {
     };
 
     try {
-      const response = await fetch("https://d5bd-160-19-226-254.ngrok-free.app/create-payment", {
+      const response = await fetch("https://1b0c-114-10-45-109.ngrok-free.app/create-payment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
